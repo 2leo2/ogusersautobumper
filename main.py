@@ -52,9 +52,9 @@ def bump():
         "@2leo Autobumper v1.1")
     print("@2leo Autobumper v1.1")
     while True:
-        for _ in range(int(threads)):
-            rounds += 1
-            driver.get(threadurls[int(bumps)])
+        rounds += 1
+        for i in range(int(threads)):
+            driver.get(threadurls[i])
             randomno = random.randrange(1, 10000000000000)
             message = "Bumped by Leo's autobumper! " + str(randomno)
             try:
@@ -70,17 +70,20 @@ def bump():
             sleep(5)
             driver.find_element_by_xpath(
                 "//*[@id=\"quick_reply_submit\"]").click()
-            print("Bumped " + threadurls[int(bumps)] + "!")
+            print("Bumped " + threadurls[i] + "!")
             bumps += 1
-            sleep(60)
-    print("Waiting...")
-    bumps = 0
-    sleep(delay)
+            if bumps == int(threads) or bumps % int(threads) == 0:
+                if not bumps == 0 or 1:
+                    print("Waiting...")
+                    bumps = 0
+                    sleep(int(delay))
+            else:
+                sleep(60)
 
 
 if not os.path.isfile("config.json"):
     first_time_setup()
 else:
     get_info()
-delay1 = input("Delay for bumping in seconds (recommended 1920): ")
+delay = input("Delay for bumping in seconds (recommended 1920): ")
 bump()
