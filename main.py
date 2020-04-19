@@ -12,6 +12,7 @@ from time import sleep
 threadurls = []
 delay = ""
 rounds = 0
+bumps = 0
 
 
 def first_time_setup():
@@ -42,7 +43,7 @@ def get_info():
 
 
 def bump():
-    global threadurls, delay
+    global threadurls, delay, rounds, bumps
     driver = webdriver.Chrome(executable_path=chromedriver)
     driver.get("https://ogusers.com/Leo")
     driver.add_cookie(
@@ -51,9 +52,9 @@ def bump():
         "@2leo Autobumper v1.1")
     print("@2leo Autobumper v1.1")
     while True:
-        for item in range(int(threads)):
+        for _ in range(int(threads)):
             rounds += 1
-            driver.get(item)
+            driver.get(threadurls[int(bumps)])
             randomno = random.randrange(1, 10000000000000)
             message = "Bumped by Leo's autobumper! " + str(randomno)
             try:
@@ -69,9 +70,11 @@ def bump():
             sleep(5)
             driver.find_element_by_xpath(
                 "//*[@id=\"quick_reply_submit\"]").click()
-            print("Bumped " + item + "!")
+            print("Bumped " + threadurls[int(bumps)] + "!")
+            bumps += 1
             sleep(60)
     print("Waiting...")
+    bumps = 0
     sleep(delay)
 
 
