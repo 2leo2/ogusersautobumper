@@ -11,12 +11,13 @@ from time import sleep
 
 threadurls = []
 delay = ""
+rounds = 0
 
 
 def first_time_setup():
     ctypes.windll.kernel32.SetConsoleTitleW(
-        "@2leo Autobumper v1.0 - First Time Setup")
-    print("@2leo Autobumper v1.0 - First Time Setup")
+        "@2leo Autobumper v1.1 - First Time Setup")
+    print("@2leo Autobumper v1.1 - First Time Setup")
     threads = input("How many threads do you want to bump? [Max 5]: ")
     for x in range(int(threads)):
         threadurl = input("Thread URL " + str(x + 1) + ": ")
@@ -30,11 +31,12 @@ def first_time_setup():
 
 
 def get_info():
-    global data, ogusersmybbuser, cookies, delay, threadurls, chromedriver
+    global data, ogusersmybbuser, cookies, delay, threadurls, chromedriver, threads
     data = json.load(open("config.json", "r"))
     ogusersmybbuser = (data["ogusersmybbuser"])
     chromedriver = (data["chromedriver"])
     threadurls = (data["threadurls"])
+    threads = (data["threads"])
     cookies = {
         'ogusersmybbuser': ogusersmybbuser}
 
@@ -46,11 +48,12 @@ def bump():
     driver.add_cookie(
         {'name': 'mybbuser', 'value': str(ogusersmybbuser)})
     ctypes.windll.kernel32.SetConsoleTitleW(
-        "@2leo Autobumper v1.0")
-    print("@2leo Autobumper v1.0")
+        "@2leo Autobumper v1.1")
+    print("@2leo Autobumper v1.1")
     while True:
-        for x in threadurls:
-            driver.get(x)
+        for item in range(int(threads)):
+            rounds += 1
+            driver.get(item)
             randomno = random.randrange(1, 10000000000000)
             message = "Bumped by Leo's autobumper! " + str(randomno)
             try:
@@ -61,11 +64,12 @@ def bump():
             except TimeoutException:
                 print("Element not interactable")
                 quit()
-            messagebox.send_keys(message)
+            if rounds == 1:
+                messagebox.send_keys(message)
             sleep(5)
             driver.find_element_by_xpath(
                 "//*[@id=\"quick_reply_submit\"]").click()
-            print("Bumped " + x + "!")
+            print("Bumped " + item + "!")
             sleep(60)
     print("Waiting...")
     sleep(delay)
@@ -75,7 +79,5 @@ if not os.path.isfile("config.json"):
     first_time_setup()
 else:
     get_info()
-delay1 = input("Delay for bumping in minutes: ")
-delay = int(delay1)*60
-print(delay)
+delay1 = input("Delay for bumping in seconds (recommended 1920): ")
 bump()
