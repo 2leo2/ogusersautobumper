@@ -24,7 +24,7 @@ def first_time_setup():
         threadurl = input("Thread URL " + str(x + 1) + ": ")
         threadurls.append(threadurl)
     ogusersmybbuser = input("Your \"ogusersmybbuser\" cookie: ")
-    chromedriver = input("Path of your chrome driver: ")
+    chromedriver = input(r'Path of your chrome driver (replace \ with \\)')
     data = {"threads": threads, "threadurls": threadurls,
             "ogusersmybbuser": ogusersmybbuser, "chromedriver": chromedriver}
     f = open("config.json", "w+")
